@@ -55,7 +55,7 @@ export default function TodoPage() {
   const handleDeleteTodo = async (todoId: string) => {
     try {
       await axios.delete(`/api/todo/${todoId}`); // Corrected endpoint
-      setTodos(todos.filter(todo => todo._id !== todoId));
+      await fetchTodos()
     } catch (error) {
       console.error('Error deleting todo:', error);
     }
@@ -89,6 +89,7 @@ export default function TodoPage() {
   };
   
 
+  
   return (
     <div className="p-8">
       <h1 className="text-3xl font-semibold mb-4">Todo List</h1>
@@ -119,11 +120,14 @@ export default function TodoPage() {
           <tbody>
             {paginatedTodos.map(todo => (
               <tr key={todo._id} className="border-t">
-                <td className="px-4 py-2">{todo.title}</td>
+                <td className="px-4 py-2 whitespace-nowrap">{todo.title}</td>
                 <td className="px-4 py-2">{todo.description}</td>
                 <td className="px-4 py-2">
                   <div className="flex space-x-2">
-                    <button onClick={() => openModalEdit(todo)} className="text-blue-500">
+                    <button
+                      onClick={() => openModalEdit(todo)}
+                      className="text-blue-500"
+                    >
                       Edit
                     </button>
                     {!todo.completed ? (
@@ -147,7 +151,7 @@ export default function TodoPage() {
           </tbody>
         </table>
         <div className="flex justify-between mt-4">
-        <button
+          <button
             onClick={handlePreviousPage}
             disabled={currentPage === 1}
             className="bg-gray-200 px-3 py-1 rounded-md"
@@ -162,17 +166,22 @@ export default function TodoPage() {
             Next
           </button>
           <div className="flex justify-center mt-4">
-          <p className="mr-3 text-gray-600">
-            Showing items {startIndex} - {endIndex} of {todos.length}
-          </p>
-          <p className="text-gray-600">
-            Page {currentPage} of {maxPage}
-          </p>
-          
-        </div>
-      
+            <p className="mr-3 text-gray-600">
+              Showing items {startIndex} - {endIndex} of {todos.length}
+            </p>
+            <p className="text-gray-600">
+              Page {currentPage} of {maxPage}
+            </p>
+          </div>
         </div>
       </div>
     </div>
   );
-                    }
+}
+
+
+
+
+
+
+                   
