@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Todo } from '../todo/page';
+import { useClerk } from '@clerk/nextjs';
 
 interface Props {
   closeModal: () => void;
@@ -10,18 +11,19 @@ interface Props {
 
 const CreateTodoModal: React.FC<Props> = ({ closeModal, setTodos,fetchTodos }) => {
   const [title, setTitle] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
+  const clerk=useClerk()
 
+  const {user}=clerk
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     // Validate fields before submitting
-    if (!title || !description) {
+    if (!title ) {
       return;
     }
 
     try {
-       await axios.post('/api/todo', { title, description });
+       await axios.post('/api/todo', { title,userId:user?.id});
       fetchTodos();
     } catch (error) {
       console.error('Error creating todo:', error);
@@ -29,7 +31,6 @@ const CreateTodoModal: React.FC<Props> = ({ closeModal, setTodos,fetchTodos }) =
 
     closeModal();
     setTitle('');
-    setDescription('');
   };
 
   return (
@@ -48,19 +49,6 @@ const CreateTodoModal: React.FC<Props> = ({ closeModal, setTodos,fetchTodos }) =
               className="w-full border rounded p-2"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="description" className="block font-semibold">
-              Description
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              rows={4}
-              className="w-full border rounded p-2"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
           <div className="flex justify-end">

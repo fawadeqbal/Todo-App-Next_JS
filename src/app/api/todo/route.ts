@@ -1,6 +1,8 @@
 import { connect } from '@/db/dbConnection';
 import Todo from '@/models/todoModel';
 import { NextRequest, NextResponse } from 'next/server';
+import { getAuth } from "@clerk/nextjs/server";
+
 
 const getConnection = async ()=>{
   await connect();
@@ -9,18 +11,21 @@ const getConnection = async ()=>{
 getConnection()
 
 export async function POST(req: NextRequest) {
+  
   try {
 
-    const { title, description } = await req.json();
-    console.log(title + description)
+    const { title,userId} = await req.json();
+    console.log(userId)
+    
 
-    if (!title || !description) {
-      return NextResponse.json({ message: 'Title and description are required' }, { status: 400 });
+
+    if (!title ) {
+      return NextResponse.json({ message: 'Title is required' }, { status: 400 });
     }
 
     const newTodo = new Todo({
       title,
-      description,
+      userId:userId
     });
 
     await newTodo.save();
@@ -33,31 +38,20 @@ export async function POST(req: NextRequest) {
 }
 
 
-export async function GET(req: NextRequest) {
 
-  try {
-  
-    const todos = await Todo.find({});
 
-    return NextResponse.json(todos, { status: 200 });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
-  }
-}
 
 export async function PUT(req: NextRequest) {
 
   try {
 
-    const { _id, title, description, completed } = await req.json()
+    const { _id, title,completed } = await req.json()
 
-    if (!_id || !title || !description) {
+    if (!_id || !title) {
       return NextResponse.json({ message: 'Id, title, and description are required' }, { status: 400 });
     }
     const updatedTodo = await Todo.findByIdAndUpdate(_id, {
       title,
-      description,
       completed,
     }, { new: true });
 

@@ -7,9 +7,8 @@ const todoSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  description: {
+  userId: {
     type: String,
-    required: true,
   },
   completed: {
     type: Boolean,

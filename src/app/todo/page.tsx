@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CreateTodoModal from '../components/CreateTodoModal';
 import EditTodoModal from '../components/EditTodoModal';
-import { useAuth} from '@clerk/nextjs';
+import { useAuth, useClerk} from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
+import Todo from '@/models/todoModel';
 
 
 
@@ -12,7 +13,7 @@ const ITEMS_PER_PAGE=5;
 export type Todo = {
   _id: string;
   title: string;
-  description: string;
+  userId: string;
   completed: boolean;
 };
 
@@ -24,6 +25,7 @@ export default function TodoPage() {
   const [updateTodo, setUpdateTodo] = useState<Todo>();
   const user= useAuth()
   const router=useRouter()
+  const clerk=useClerk()
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -51,7 +53,7 @@ export default function TodoPage() {
 
   const fetchTodos = async () => {
     try {
-      const response = await axios.get('/api/todo'); // Replace with your backend API endpoint
+      const response = await axios.get(`/api/todo/${clerk.user?.id}`); // Replace with your backend API endpoint
       setTodos(response.data);
     } catch (error) {
       console.error('Error fetching todos:', error);
@@ -107,7 +109,11 @@ export default function TodoPage() {
   
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-semibold mb-4">Todo List</h1>
+      <div className='flex justify-center items-center'>
+      <h1 className="text-2xl font-semibold mb-3">Welcome {clerk.user?.fullName}</h1>
+      </div>
+      
+      <h1 className='text-3xl font-semibold mb-3'>Todo List</h1>
       <button
         onClick={openModal}
         className="bg-blue-500 text-white px-4 py-2 rounded-md mb-4 inline-block"
@@ -129,7 +135,7 @@ export default function TodoPage() {
           <thead>
             <tr>
               <th className="px-4 py-2">Title</th>
-              <th className="px-4 py-2">Description</th>
+              <th className="px-4 py-2">Completed</th>
               <th className="px-4 py-2">Actions</th>
             </tr>
           </thead>
@@ -137,7 +143,7 @@ export default function TodoPage() {
             {paginatedTodos.map(todo => (
               <tr key={todo._id} className="border-t">
                 <td className="px-4 py-2 whitespace-nowrap">{todo.title}</td>
-                <td className="px-4 py-2">{todo.description}</td>
+                <td className="px-4 py-2">{todo.completed==true?'true':'false'}</td>
                 <td className="px-4 py-2">
                   <div className="flex space-x-2">
                     <button
