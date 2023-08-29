@@ -78,48 +78,51 @@ const TodoPage = () => {
         <EditTodoModal
           closeEditModal={closeEditModal}
           todo={updateTodo!}
-          
         />
       )}
-      {isModalOpen && <CreateTodoModal setTodos={setTodos} closeModal={closeModal} fetchTodos={fetchTodos}/>}
-      <table className="w-full">
-        <thead>
-          <tr>
-            <th className="px-4 py-2">Title</th>
-            <th className="px-4 py-2">Description</th>
-            <th className="px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {todos.map(todo => (
-            <tr key={todo._id} className="border-t">
-              <td className="px-4 py-2">{todo.title}</td>
-              <td className="px-4 py-2">{todo.description}</td>
-              <td className="px-4 py-2">
-                <div className="flex space-x-2">
-                  <button onClick={() => openModalEdit(todo)} className="text-blue-500">
-                    Edit
-                  </button>
-                  {!todo.completed ? (
-                    <button
-                      
-                      className="text-green-500"
-                    >
-                      Done
-                    </button>
-                  ) : null}
-                  <button
-                    onClick={() => handleDeleteTodo(todo._id)}
-                    className="text-red-500"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </td>
+      {isModalOpen && (
+        <CreateTodoModal setTodos={setTodos} closeModal={closeModal} fetchTodos={fetchTodos} />
+      )}
+      <div className="overflow-x-auto">
+        <table className="w-full table-auto">
+          <thead>
+            <tr>
+              <th className="px-4 py-2">Title</th>
+              <th className="px-4 py-2">Description</th>
+              <th className="px-4 py-2">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {todos.map(todo => (
+              <tr key={todo._id} className="border-t">
+                <td className="px-4 py-2">{todo.title}</td>
+                <td className="px-4 py-2">{todo.description}</td>
+                <td className="px-4 py-2">
+                  <div className="flex space-x-2">
+                    <button onClick={() => openModalEdit(todo)} className="text-blue-500">
+                      Edit
+                    </button>
+                    {!todo.completed ? (
+                      <button
+                        // Implement your logic for marking as done
+                        className="text-green-500"
+                      >
+                        Done
+                      </button>
+                    ) : null}
+                    <button
+                      onClick={() => handleDeleteTodo(todo._id)}
+                      className="text-red-500"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
