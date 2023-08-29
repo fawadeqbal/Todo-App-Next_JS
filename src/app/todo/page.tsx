@@ -78,10 +78,10 @@ const TodoPage = () => {
         <EditTodoModal
           closeEditModal={closeEditModal}
           todo={updateTodo!}
-          fetchTodos={fetchTodos}
+          
         />
       )}
-      {isModalOpen && <CreateTodoModal fetchTodos={fetchTodos} closeModal={closeModal} />}
+      {isModalOpen && <CreateTodoModal setTodos={setTodos} closeModal={closeModal} />}
       <table className="w-full">
         <thead>
           <tr>

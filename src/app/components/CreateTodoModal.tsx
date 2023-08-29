@@ -1,19 +1,29 @@
 "use client"
 import React, { useState } from 'react';
 import axios from 'axios'
+import { Todo } from '../todo/page';
 interface Props {
   closeModal: () => void;
-  fetchTodos:()=>void;
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>; // Correct the type if needed
+
 }
 
-const CreateTodoModal: React.FC<Props> = ({ closeModal,fetchTodos }) => {
+const CreateTodoModal: React.FC<Props> = ({ closeModal,setTodos }) => {
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     await axios.post('/api/todo/create',{title,description})
-    fetchTodos();
+    setTodos((prev: Todo[]) => [
+      ...prev,
+      {
+        _id: Math.random().toString(), // Use a unique ID generator here
+        title,
+        description,
+        completed: false,
+      },
+    ])
     closeModal();
     setTitle('');
     setDescription('');
