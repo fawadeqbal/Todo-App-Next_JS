@@ -131,14 +131,6 @@ export default function TodoPage() {
                     >
                       Edit
                     </button>
-                    {!todo.completed ? (
-                      <button
-                        // Implement your logic for marking as done
-                        className="text-green-500"
-                      >
-                        Done
-                      </button>
-                    ) : null}
                     <button
                       onClick={() => handleDeleteTodo(todo._id)}
                       className="text-red-500"
