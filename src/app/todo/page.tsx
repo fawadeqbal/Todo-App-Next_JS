@@ -103,6 +103,7 @@ export default function TodoPage() {
         <EditTodoModal
           closeEditModal={closeEditModal}
           todo={updateTodo!}
+          fetchTodos={fetchTodos}
         />
       )}
       {isModalOpen && (

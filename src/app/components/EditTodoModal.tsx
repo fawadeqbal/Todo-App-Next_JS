@@ -5,10 +5,11 @@ import axios from 'axios';
 type Props ={
   todo: Todo; // Pass the todo object you want to edit
   closeEditModal: () => void;
+  fetchTodos:()=> void;
 
 }
 
-const EditTodoModal: React.FC<Props> = ({ todo, closeEditModal, }) => {
+const EditTodoModal: React.FC<Props> = ({ todo, closeEditModal,fetchTodos }) => {
   const [title, setTitle] = useState<string>(todo.title);
   const [description, setDescription] = useState<string>(todo.description);
   const [completed, setCompleted] = useState<boolean>(todo.completed);
@@ -22,6 +23,7 @@ const EditTodoModal: React.FC<Props> = ({ todo, closeEditModal, }) => {
       completed,
     };
     await axios.put("/api/todo",updatedTodo);
+    fetchTodos()
     closeEditModal();
   };
 
