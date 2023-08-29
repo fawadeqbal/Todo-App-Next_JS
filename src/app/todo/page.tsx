@@ -49,7 +49,7 @@ export default function TodoPage() {
 
   useEffect(() => {
     fetchTodos();
-  }, []);
+  }, [clerk.user?.id]);
 
   const fetchTodos = async () => {
     try {

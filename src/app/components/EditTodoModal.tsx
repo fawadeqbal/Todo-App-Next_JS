@@ -11,7 +11,6 @@ type Props ={
 
 const EditTodoModal: React.FC<Props> = ({ todo, closeEditModal,fetchTodos }) => {
   const [title, setTitle] = useState<string>(todo.title);
-  const [description, setDescription] = useState<string>(todo.description);
   const [completed, setCompleted] = useState<boolean>(todo.completed);
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -19,7 +18,6 @@ const EditTodoModal: React.FC<Props> = ({ todo, closeEditModal,fetchTodos }) => 
     const updatedTodo = {
       ...todo,
       title,
-      description,
       completed,
     };
     await axios.put("/api/todo",updatedTodo);
@@ -43,19 +41,6 @@ const EditTodoModal: React.FC<Props> = ({ todo, closeEditModal,fetchTodos }) => 
               className="w-full border rounded p-2"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="description" className="block font-semibold">
-              Description
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              rows={4}
-              className="w-full border rounded p-2"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
           <div className="mb-4">
