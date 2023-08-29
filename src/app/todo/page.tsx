@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CreateTodoModal from '../components/CreateTodoModal';
 import EditTodoModal from '../components/EditTodoModal';
+import { useAuth, useClerk } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+
 
 
 const ITEMS_PER_PAGE=5;
@@ -14,10 +17,12 @@ export type Todo = {
 };
 
 export default function TodoPage() {
+  
   const [todos, setTodos] = useState<Todo[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [updateTodo, setUpdateTodo] = useState<Todo>();
+  const user= useAuth()
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -87,7 +92,16 @@ export default function TodoPage() {
       setCurrentPage(prevPage => prevPage + 1);
     }
   };
-  
+  if(!user.isSignedIn){
+    const router=useRouter()
+    router.push('/signin')
+    return(
+      <div>
+      <h1>unAutorized</h1>
+      </div>
+    )
+
+  }
 
   
   return (
