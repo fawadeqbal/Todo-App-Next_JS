@@ -4,6 +4,8 @@ import axios from 'axios';
 import CreateTodoModal from '../components/CreateTodoModal';
 import EditTodoModal from '../components/EditTodoModal';
 
+
+const ITEMS_PER_PAGE=5;
 export type Todo = {
   _id: string;
   title: string;
@@ -11,11 +13,13 @@ export type Todo = {
   completed: boolean;
 };
 
-const TodoPage = () => {
+export default function TodoPage() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
-  const [updateTodo, setUpdateTodo] = useState<Todo | undefined>();
+  const [updateTodo, setUpdateTodo] = useState<Todo>();
+
+  const [currentPage, setCurrentPage] = useState(1);
 
   const openModalEdit = (todo: Todo) => {
     setIsModalEditOpen(true);
@@ -64,6 +68,26 @@ const TodoPage = () => {
       prevTodos.map(todo => (todo._id === updatedTodo._id ? updatedTodo : todo))
     );
   };
+  const maxPage = Math.ceil(todos.length / ITEMS_PER_PAGE);
+
+  const paginatedTodos = todos.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE + 1;
+  const endIndex = Math.min(todos.length, currentPage * ITEMS_PER_PAGE);
+
+  const handlePreviousPage = () => {
+    setCurrentPage(prevPage => Math.max(prevPage - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < maxPage) {
+      setCurrentPage(prevPage => prevPage + 1);
+    }
+  };
+  
 
   return (
     <div className="p-8">
@@ -93,7 +117,7 @@ const TodoPage = () => {
             </tr>
           </thead>
           <tbody>
-            {todos.map(todo => (
+            {paginatedTodos.map(todo => (
               <tr key={todo._id} className="border-t">
                 <td className="px-4 py-2">{todo.title}</td>
                 <td className="px-4 py-2">{todo.description}</td>
@@ -122,9 +146,33 @@ const TodoPage = () => {
             ))}
           </tbody>
         </table>
+        <div className="flex justify-between mt-4">
+        <button
+            onClick={handlePreviousPage}
+            disabled={currentPage === 1}
+            className="bg-gray-200 px-3 py-1 rounded-md"
+          >
+            Previous
+          </button>
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === maxPage}
+            className="bg-gray-200 px-3 py-1 rounded-md"
+          >
+            Next
+          </button>
+          <div className="flex justify-center mt-4">
+          <p className="mr-3 text-gray-600">
+            Showing items {startIndex} - {endIndex} of {todos.length}
+          </p>
+          <p className="text-gray-600">
+            Page {currentPage} of {maxPage}
+          </p>
+          
+        </div>
+      
+        </div>
       </div>
     </div>
   );
-};
-
-export default TodoPage;
+                    }
