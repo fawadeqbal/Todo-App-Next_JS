@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import { Todo } from '../todo/page';
-
+import axios from 'axios';
 type Props ={
   todo: Todo; // Pass the todo object you want to edit
   closeEditModal: () => void;
@@ -13,7 +13,7 @@ const EditTodoModal: React.FC<Props> = ({ todo, closeEditModal, }) => {
   const [description, setDescription] = useState<string>(todo.description);
   const [completed, setCompleted] = useState<boolean>(todo.completed);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const updatedTodo = {
       ...todo,
@@ -21,10 +21,7 @@ const EditTodoModal: React.FC<Props> = ({ todo, closeEditModal, }) => {
       description,
       completed,
     };
-    console.log(updatedTodo)
-    
-    // Handle the submission of the updated todo
-    // updateTodo(updatedTodo);
+    await axios.put("/api/todo",updatedTodo);
     closeEditModal();
   };
 

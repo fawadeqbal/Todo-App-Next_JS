@@ -23,15 +23,6 @@ const CreateTodoModal: React.FC<Props> = ({ closeModal, setTodos,fetchTodos }) =
     try {
        await axios.post('/api/todo', { title, description });
       fetchTodos();
-      // setTodos(prev => [
-      //   ...prev,
-      //   {
-      //     _id: response.data._id,
-      //     title,
-      //     description,
-      //     completed: false,
-      //   },
-      // ]);
     } catch (error) {
       console.error('Error creating todo:', error);
     }
