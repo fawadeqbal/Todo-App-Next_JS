@@ -1,29 +1,41 @@
-"use client"
 import React, { useState } from 'react';
-import axios from 'axios'
+import axios from 'axios';
 import { Todo } from '../todo/page';
+
 interface Props {
   closeModal: () => void;
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>; // Correct the type if needed
-
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+  fetchTodos: ()=> void;
 }
 
-const CreateTodoModal: React.FC<Props> = ({ closeModal,setTodos }) => {
+const CreateTodoModal: React.FC<Props> = ({ closeModal, setTodos,fetchTodos }) => {
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    await axios.post('/api/todo',{title,description})
-    setTodos((prev: Todo[]) => [
-      ...prev,
-      {
-        _id: Math.random().toString(), // Use a unique ID generator here
-        title,
-        description,
-        completed: false,
-      },
-    ])
+
+    // Validate fields before submitting
+    if (!title || !description) {
+      return;
+    }
+
+    try {
+       await axios.post('/api/todo', { title, description });
+      fetchTodos();
+      // setTodos(prev => [
+      //   ...prev,
+      //   {
+      //     _id: response.data._id,
+      //     title,
+      //     description,
+      //     completed: false,
+      //   },
+      // ]);
+    } catch (error) {
+      console.error('Error creating todo:', error);
+    }
+
     closeModal();
     setTitle('');
     setDescription('');

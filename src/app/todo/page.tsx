@@ -81,7 +81,7 @@ const TodoPage = () => {
           
         />
       )}
-      {isModalOpen && <CreateTodoModal setTodos={setTodos} closeModal={closeModal} />}
+      {isModalOpen && <CreateTodoModal setTodos={setTodos} closeModal={closeModal} fetchTodos={fetchTodos}/>}
       <table className="w-full">
         <thead>
           <tr>

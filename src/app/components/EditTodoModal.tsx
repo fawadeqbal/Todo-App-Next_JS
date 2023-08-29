@@ -8,7 +8,7 @@ type Props ={
 
 }
 
-const EditTodoModal: React.FC<Props> = ({ todo, closeEditModal }) => {
+const EditTodoModal: React.FC<Props> = ({ todo, closeEditModal, }) => {
   const [title, setTitle] = useState<string>(todo.title);
   const [description, setDescription] = useState<string>(todo.description);
   const [completed, setCompleted] = useState<boolean>(todo.completed);
