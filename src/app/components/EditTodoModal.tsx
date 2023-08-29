@@ -5,9 +5,10 @@ import { Todo } from '../todo/page';
 type Props ={
   todo: Todo; // Pass the todo object you want to edit
   closeEditModal: () => void;
+  fetchTodos:()=>void;
 }
 
-const EditTodoModal: React.FC<Props> = ({ todo, closeEditModal }) => {
+const EditTodoModal: React.FC<Props> = ({ todo, closeEditModal,fetchTodos }) => {
   const [title, setTitle] = useState<string>(todo.title);
   const [description, setDescription] = useState<string>(todo.description);
   const [completed, setCompleted] = useState<boolean>(todo.completed);
@@ -21,6 +22,7 @@ const EditTodoModal: React.FC<Props> = ({ todo, closeEditModal }) => {
       completed,
     };
     console.log(updatedTodo)
+    fetchTodos();
     // Handle the submission of the updated todo
     // updateTodo(updatedTodo);
     closeEditModal();

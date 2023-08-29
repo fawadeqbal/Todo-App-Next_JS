@@ -3,15 +3,17 @@ import React, { useState } from 'react';
 import axios from 'axios'
 interface Props {
   closeModal: () => void;
+  fetchTodos:()=>void;
 }
 
-const CreateTodoModal: React.FC<Props> = ({ closeModal }) => {
+const CreateTodoModal: React.FC<Props> = ({ closeModal,fetchTodos }) => {
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     await axios.post('/api/todo/create',{title,description})
+    fetchTodos();
     closeModal();
     setTitle('');
     setDescription('');
