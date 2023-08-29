@@ -14,7 +14,7 @@ const CreateTodoModal: React.FC<Props> = ({ closeModal,setTodos }) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    await axios.post('/api/todo/create',{title,description})
+    await axios.post('/api/todo',{title,description})
     setTodos((prev: Todo[]) => [
       ...prev,
       {

@@ -41,7 +41,7 @@ const TodoPage = () => {
 
   const fetchTodos = async () => {
     try {
-      const response = await axios.get('/api/todo/read'); // Replace with your backend API endpoint
+      const response = await axios.get('/api/todo'); // Replace with your backend API endpoint
       setTodos(response.data);
     } catch (error) {
       console.error('Error fetching todos:', error);
