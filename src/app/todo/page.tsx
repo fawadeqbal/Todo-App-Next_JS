@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CreateTodoModal from '../components/CreateTodoModal';
 import EditTodoModal from '../components/EditTodoModal';
-import { useAuth, useClerk } from '@clerk/nextjs';
+import { useAuth} from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 
 
@@ -23,6 +23,7 @@ export default function TodoPage() {
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [updateTodo, setUpdateTodo] = useState<Todo>();
   const user= useAuth()
+  const router=useRouter()
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -93,7 +94,7 @@ export default function TodoPage() {
     }
   };
   if(!user.isSignedIn){
-    const router=useRouter()
+    
     router.push('/signin')
     return(
       <div>
