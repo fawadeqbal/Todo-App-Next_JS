@@ -7,7 +7,7 @@ import { useAuth, useClerk } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import Todo from '@/models/todoModel';
 import { toast } from 'react-toastify'
-
+import CryptoJS from 'crypto-js';
 
 const ITEMS_PER_PAGE = 5;
 export type Todo = {
@@ -31,6 +31,13 @@ export default function TodoPage() {
 
   useEffect(() => {
     fetchTodos();
+    if (todos.length !== 0) {
+      const decryptedTodos = todos.map((todo) => ({
+        ...todo,
+        title: CryptoJS.AES.decrypt(todo.title, process.env.SECRET_KEY as string).toString(CryptoJS.enc.Utf8),
+      }));
+      setTodos(decryptedTodos);
+    }
   }, []);
 
  
