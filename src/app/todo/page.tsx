@@ -7,7 +7,7 @@ import { useAuth, useClerk } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import Todo from '@/models/todoModel';
 import { toast } from 'react-toastify'
-import CryptoJS from 'crypto-js';
+
 
 const ITEMS_PER_PAGE = 5;
 export type Todo = {
@@ -57,14 +57,7 @@ export default function TodoPage() {
   const fetchTodos = async () => {
     try {
       const response = await axios.get(`/api/todo/${clerk.user?.id}`); // Replace with your backend API endpoint
-      const todoList:Todo[]=response.data
-      if (todos.length !== 0) {
-        const decryptedTodos = todoList.map((todo) => ({
-          ...todo,
-          title: CryptoJS.AES.decrypt(todo.title, process.env.SECRET_KEY!).toString(CryptoJS.enc.Utf8),
-        }));
-        setTodos(decryptedTodos);
-      }
+      setTodos(response.data);
     } catch (error) {
       console.error('Error fetching todos:', error);
     }
