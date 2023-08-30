@@ -1,4 +1,3 @@
-"use client"
 import React from 'react';
 import Link from 'next/link';
 
@@ -23,8 +22,7 @@ const Home: React.FC = () => {
         ))}
       </div>
       <div className="mt-8">
-        <Link href="/todo"className="text-blue-500 underline">Go to Todo Page
-        </Link>
+        <Link href="/todo" className="text-blue-500 underline">Go to Todo Page</Link>
       </div>
     </div>
   );

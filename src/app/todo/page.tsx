@@ -28,6 +28,7 @@ export default function TodoPage() {
   const clerk = useClerk()
 
   const [currentPage, setCurrentPage] = useState(1);
+  
 
   const openModalEdit = (todo: Todo) => {
     setIsModalEditOpen(true);
