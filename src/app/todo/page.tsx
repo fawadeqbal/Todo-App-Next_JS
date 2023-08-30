@@ -130,7 +130,7 @@ export default function TodoPage() {
   <thead className="bg-gray-200">
     <tr>
       <th className="px-4 py-2 border">Title</th>
-      <th className="px-4 py-2 border">Completed</th>
+      <th className="px-4 py-2 border">Status</th>
       <th className="px-4 py-2 border">Actions</th>
     </tr>
   </thead>

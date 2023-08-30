@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react';
 import { Todo } from '../todo/page';
 import axios from 'axios';
