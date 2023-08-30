@@ -1,31 +1,30 @@
 import { connect } from '@/db/dbConnection';
 import Todo from '@/models/todoModel';
 import { NextRequest, NextResponse } from 'next/server';
-import { getAuth } from "@clerk/nextjs/server";
 
 
-const getConnection = async ()=>{
+const getConnection = async () => {
   await connect();
 }
 
 getConnection()
 
 export async function POST(req: NextRequest) {
-  
+
   try {
 
-    const { title,userId} = await req.json();
+    const { title, userId } = await req.json();
     console.log(userId)
-    
 
 
-    if (!title ) {
+
+    if (!title) {
       return NextResponse.json({ message: 'Title is required' }, { status: 400 });
     }
 
     const newTodo = new Todo({
       title,
-      userId:userId
+      userId: userId
     });
 
     await newTodo.save();
@@ -45,7 +44,7 @@ export async function PUT(req: NextRequest) {
 
   try {
 
-    const { _id, title,completed } = await req.json()
+    const { _id, title, completed } = await req.json()
 
     if (!_id || !title) {
       return NextResponse.json({ message: 'Id, title, and description are required' }, { status: 400 });
