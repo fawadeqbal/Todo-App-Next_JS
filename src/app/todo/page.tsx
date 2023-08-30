@@ -3,13 +3,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CreateTodoModal from '../components/CreateTodoModal';
 import EditTodoModal from '../components/EditTodoModal';
-import { useAuth, useClerk} from '@clerk/nextjs';
+import { useAuth, useClerk } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import Todo from '@/models/todoModel';
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 
 
-const ITEMS_PER_PAGE=5;
+const ITEMS_PER_PAGE = 5;
 export type Todo = {
   _id: string;
   title: string;
@@ -18,14 +18,14 @@ export type Todo = {
 };
 
 export default function TodoPage() {
-  
+
   const [todos, setTodos] = useState<Todo[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [updateTodo, setUpdateTodo] = useState<Todo>();
-  const user= useAuth()
-  const router=useRouter()
-  const clerk=useClerk()
+  const user = useAuth()
+  const router = useRouter()
+  const clerk = useClerk()
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -49,7 +49,7 @@ export default function TodoPage() {
 
   useEffect(() => {
     fetchTodos();
-  }, [clerk.user?.id]);
+  }, []);
 
   const fetchTodos = async () => {
     try {
@@ -63,10 +63,10 @@ export default function TodoPage() {
   const handleDeleteTodo = async (todoId: string) => {
     try {
       await axios.delete(`/api/todo/${todoId}`); // Corrected endpoint
-     
+
       await fetchTodos()
       toast.success("Todo deleted successfully")
-      
+
     } catch (error) {
       console.error('Error deleting todo:', error);
     }
@@ -90,24 +90,24 @@ export default function TodoPage() {
       setCurrentPage(prevPage => prevPage + 1);
     }
   };
-  if(!user.isSignedIn){
-    
+  if (!user.isSignedIn) {
+
     router.push('/signin')
-    return(
+    return (
       <div>
-      <h1>unAutorized</h1>
+        <h1>unAutorized</h1>
       </div>
     )
 
   }
 
-  
+
   return (
     <div className="p-8">
       <div className='flex justify-center items-center'>
-      <h1 className="text-2xl font-semibold mb-3">Welcome {clerk.user?.fullName}</h1>
+        <h1 className="text-2xl font-semibold mb-3">Welcome {clerk.user?.fullName}</h1>
       </div>
-      
+
       <h1 className='text-3xl font-semibold mb-3'>Todo List</h1>
       <button
         onClick={openModal}
@@ -126,46 +126,46 @@ export default function TodoPage() {
         <CreateTodoModal setTodos={setTodos} closeModal={closeModal} fetchTodos={fetchTodos} />
       )}
       <div className="overflow-x-auto">
-      <table className="w-full table-auto">
-  <thead className="bg-gray-200">
-    <tr>
-      <th className="px-4 py-2 border">Title</th>
-      <th className="px-4 py-2 border">Status</th>
-      <th className="px-4 py-2 border">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {paginatedTodos.map(todo => (
-      <tr key={todo._id} className="border-t">
-        <td className="px-4 py-2 whitespace-nowrap border">{todo.title}</td>
-        <td className="px-4 py-2 border">
-        <button
-        
-        className={`text-${todo.completed ? 'green' : 'red'}-500`}
-      >
-        {todo.completed? 'Completed' : 'Not Completed'}
-      </button>
-    </td>
-        <td className="px-4 py-2 border">
-          <div className="flex space-x-2">
-            <button
-              onClick={() => openModalEdit(todo)}
-              className="text-blue-500"
-            >
-              Edit
-            </button>
-            <button
-              onClick={() => handleDeleteTodo(todo._id)}
-              className="text-red-500"
-            >
-              Delete
-            </button>
-          </div>
-        </td>
-      </tr>
-    ))}
-  </tbody>
-</table>
+        <table className="w-full table-auto">
+          <thead className="bg-gray-200">
+            <tr>
+              <th className="px-4 py-2 border">Title</th>
+              <th className="px-4 py-2 border">Status</th>
+              <th className="px-4 py-2 border">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedTodos.map(todo => (
+              <tr key={todo._id} className="border-t">
+                <td className="px-4 py-2 whitespace-nowrap border">{todo.title}</td>
+                <td className="px-4 py-2 border">
+                  <button
+
+                    className={`text-${todo.completed ? 'green' : 'red'}-500`}
+                  >
+                    {todo.completed ? 'Completed' : 'Not Completed'}
+                  </button>
+                </td>
+                <td className="px-4 py-2 border">
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => openModalEdit(todo)}
+                      className="text-blue-500"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteTodo(todo._id)}
+                      className="text-red-500"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
         <div className="flex justify-between mt-4">
           <button
@@ -201,4 +201,3 @@ export default function TodoPage() {
 
 
 
-                   
