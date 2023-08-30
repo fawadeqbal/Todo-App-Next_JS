@@ -61,7 +61,9 @@ export default function TodoPage() {
       console.error('Error fetching todos:', error);
     }
   };
-
+  const handleProfile = ()=>{
+    router.push('/userProfile')
+  }
   const handleDeleteTodo = async (todoId: string) => {
     try {
       await axios.delete(`/api/todo/${todoId}`); // Corrected endpoint
@@ -108,12 +110,20 @@ export default function TodoPage() {
       </div>
 
       <h1 className='text-3xl font-semibold mb-3'>Todo List</h1>
+      <div className='flex justify-between'>
       <button
         onClick={openModal}
         className="bg-blue-500 text-white px-4 py-2 rounded-md mb-4 inline-block"
       >
         Create Todo
       </button>
+      <button
+        onClick={handleProfile}
+        className="bg-blue-500 text-white px-4 py-2 rounded-md mb-4 inline-block"
+      >
+        View Profile
+      </button>
+      </div>
       {isModalEditOpen && (
         <EditTodoModal
           closeEditModal={closeEditModal}
