@@ -7,8 +7,6 @@ import { useAuth, useClerk } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import Todo from '@/models/todoModel';
 import { toast } from 'react-toastify'
-import AES from 'crypto-js/aes';
-import Loading from './loading';
 
 
 const ITEMS_PER_PAGE = 5;
@@ -35,13 +33,7 @@ export default function TodoPage() {
     fetchTodos();
   }, []);
 
-  
-  if (!user.isSignedIn) {
-
-    router.push('/signin')
-    return <><Loading/></>;
-
-  }
+ 
 
   const openModalEdit = (todo: Todo) => {
     setIsModalEditOpen(true);
@@ -100,6 +92,13 @@ export default function TodoPage() {
       setCurrentPage(prevPage => prevPage + 1);
     }
   };
+   
+  if (!user.isSignedIn) {
+
+    router.push('/signin')
+    return <></>;
+
+  }
  
 
   return (

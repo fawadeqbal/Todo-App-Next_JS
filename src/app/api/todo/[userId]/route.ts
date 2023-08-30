@@ -1,7 +1,11 @@
 import { connect } from "@/db/dbConnection";
 import { NextResponse, NextRequest } from "next/server";
 import Todo from "@/models/todoModel";
-connect();
+const getConnection = async () => {
+  await connect();
+}
+
+getConnection()
 type Props = {
   params: {
     userId: string;
@@ -16,7 +20,6 @@ export async function GET(req: NextRequest,{ params }: Props) {
       return NextResponse.json({ message: 'User not authenticated' }, { status: 401 });
     }
 
-    await connect();
 
     const todos = await Todo.find({ userId: userId});
     console.log(todos)
