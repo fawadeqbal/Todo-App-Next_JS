@@ -22,4 +22,3 @@ export async function connect() {
     throw e; // Rethrow the error to handle it elsewhere if needed
   }
 }
-
