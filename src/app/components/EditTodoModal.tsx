@@ -1,28 +1,37 @@
-"use client"
 import React, { useState } from 'react';
 import { Todo } from '../todo/page';
 import axios from 'axios';
-type Props ={
+
+type Props = {
   todo: Todo; // Pass the todo object you want to edit
   closeEditModal: () => void;
-  fetchTodos:()=> void;
+  fetchTodos: () => void;
+};
 
-}
-
-const EditTodoModal: React.FC<Props> = ({ todo, closeEditModal,fetchTodos }) => {
+const EditTodoModal: React.FC<Props> = ({ todo, closeEditModal, fetchTodos }) => {
   const [title, setTitle] = useState<string>(todo.title);
   const [completed, setCompleted] = useState<boolean>(todo.completed);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setIsLoading(true);
+
     const updatedTodo = {
       ...todo,
       title,
       completed,
     };
-    await axios.put("/api/todo",updatedTodo);
-    fetchTodos()
-    closeEditModal();
+
+    try {
+      await axios.put("/api/todo", updatedTodo);
+      fetchTodos();
+      closeEditModal();
+    } catch (error) {
+      console.error('Error updating todo:', error);
+    }
+
+    setIsLoading(false);
   };
 
   return (
@@ -63,8 +72,12 @@ const EditTodoModal: React.FC<Props> = ({ todo, closeEditModal,fetchTodos }) => 
             >
               Cancel
             </button>
-            <button type="submit" className="bg-blue-500 text-white px-3 py-1 rounded">
-              Update
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-3 py-1 rounded"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Updating...' : 'Update'}
             </button>
           </div>
         </form>
