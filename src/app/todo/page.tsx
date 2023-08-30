@@ -6,7 +6,7 @@ import EditTodoModal from '../components/EditTodoModal';
 import { useAuth, useClerk} from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import Todo from '@/models/todoModel';
-
+import {toast} from 'react-toastify'
 
 
 const ITEMS_PER_PAGE=5;
@@ -63,18 +63,13 @@ export default function TodoPage() {
   const handleDeleteTodo = async (todoId: string) => {
     try {
       await axios.delete(`/api/todo/${todoId}`); // Corrected endpoint
+     
       await fetchTodos()
+      toast.success("Todo deleted successfully")
+      
     } catch (error) {
       console.error('Error deleting todo:', error);
     }
-  };
-
-  const handleUpdateTodo = (updatedTodo: Todo) => {
-    // Implement your logic to update the todo
-    // For now, I'm just updating the todos state with the new todo
-    setTodos(prevTodos =>
-      prevTodos.map(todo => (todo._id === updatedTodo._id ? updatedTodo : todo))
-    );
   };
   const maxPage = Math.ceil(todos.length / ITEMS_PER_PAGE);
 
