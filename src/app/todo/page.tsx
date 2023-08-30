@@ -31,13 +31,7 @@ export default function TodoPage() {
 
   useEffect(() => {
     fetchTodos();
-    if (todos.length !== 0) {
-      const decryptedTodos = todos.map((todo) => ({
-        ...todo,
-        title: CryptoJS.AES.decrypt(todo.title, process.env.SECRET_KEY as string).toString(CryptoJS.enc.Utf8),
-      }));
-      setTodos(decryptedTodos);
-    }
+    
   }, []);
 
  
@@ -63,7 +57,14 @@ export default function TodoPage() {
   const fetchTodos = async () => {
     try {
       const response = await axios.get(`/api/todo/${clerk.user?.id}`); // Replace with your backend API endpoint
-      setTodos(response.data);
+      const todoList:Todo[]=response.data
+      if (todos.length !== 0) {
+        const decryptedTodos = todoList.map((todo) => ({
+          ...todo,
+          title: CryptoJS.AES.decrypt(todo.title, process.env.SECRET_KEY!).toString(CryptoJS.enc.Utf8),
+        }));
+        setTodos(decryptedTodos);
+      }
     } catch (error) {
       console.error('Error fetching todos:', error);
     }
