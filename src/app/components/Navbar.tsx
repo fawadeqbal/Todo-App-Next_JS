@@ -15,9 +15,9 @@ const Navbar = () => {
           </Link>
         </div>
         <div className='text-white text-xl font-semibold'>
-        <UserButton  />
+          <UserButton />
         </div>
-        
+
       </div>
     </nav>
   );
