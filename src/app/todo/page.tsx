@@ -140,7 +140,7 @@ export default function TodoPage() {
         <td className="px-4 py-2 whitespace-nowrap border">{todo.title}</td>
         <td className="px-4 py-2 border">
         <button
-        {/* onClick={() => handleToggleCompleted(todo._id)} */}
+        
         className={`text-${todo.completed ? 'green' : 'red'}-500`}
       >
         {todo.completed? 'Completed' : 'Not Completed'}
