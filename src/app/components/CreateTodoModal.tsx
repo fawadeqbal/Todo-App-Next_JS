@@ -6,24 +6,28 @@ import { useClerk } from '@clerk/nextjs';
 interface Props {
   closeModal: () => void;
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
-  fetchTodos: ()=> void;
+  fetchTodos: () => void;
 }
 
-const CreateTodoModal: React.FC<Props> = ({ closeModal, setTodos,fetchTodos }) => {
+const CreateTodoModal: React.FC<Props> = ({ closeModal, setTodos, fetchTodos }) => {
   const [title, setTitle] = useState<string>('');
-  const clerk=useClerk()
+  const [isLoading, setIsLoading] = useState<boolean>(false); // New state for loading
+  const clerk = useClerk();
 
-  const {user}=clerk
+  const { user } = clerk;
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     // Validate fields before submitting
-    if (!title ) {
+    if (!title) {
       return;
     }
 
+    setIsLoading(true); // Start loading state
+
     try {
-       await axios.post('/api/todo', { title,userId:user?.id});
+      await axios.post('/api/todo', { title, userId: user?.id });
       fetchTodos();
     } catch (error) {
       console.error('Error creating todo:', error);
@@ -31,6 +35,7 @@ const CreateTodoModal: React.FC<Props> = ({ closeModal, setTodos,fetchTodos }) =
 
     closeModal();
     setTitle('');
+    setIsLoading(false); // End loading state
   };
 
   return (
@@ -59,8 +64,12 @@ const CreateTodoModal: React.FC<Props> = ({ closeModal, setTodos,fetchTodos }) =
             >
               Cancel
             </button>
-            <button type="submit" className="bg-blue-500 text-white px-3 py-1 rounded">
-              Create
+            <button
+              type="submit"
+              className={`bg-blue-500 text-white px-3 py-1 rounded ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={isLoading} // Disable the button during loading
+            >
+              {isLoading ? 'Creating...' : 'Create'}
             </button>
           </div>
         </form>

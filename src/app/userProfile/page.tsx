@@ -1,10 +1,12 @@
-import React from 'react'
-import { UserProfile } from '@clerk/nextjs'
+import React from 'react';
+import { UserProfile } from '@clerk/nextjs';
 
 const UserProfilePage = () => {
   return (
-    <div><UserProfile/></div>
-  )
-}
+    <div className="min-h-screen flex items-center justify-center">
+      <UserProfile />
+    </div>
+  );
+};
 
-export default UserProfilePage
+export default UserProfilePage;
