@@ -94,11 +94,7 @@ export default function TodoPage() {
   if (!user.isSignedIn) {
 
     router.push('/signin')
-    return (
-      <div>
-        <h1>unAutorized</h1>
-      </div>
-    )
+    return null;
 
   }
 
