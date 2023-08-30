@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Todo } from '../todo/page';
 import { useClerk } from '@clerk/nextjs';
+import CryptoJS from 'crypto-js';
 
 interface Props {
   closeModal: () => void;
@@ -28,7 +29,7 @@ const CreateTodoModal: React.FC<Props> = ({ closeModal, setTodos, fetchTodos }) 
     setIsLoading(true); // Start loading state
 
     try {
-      await axios.post('/api/todo', { title, userId: user?.id });
+      await axios.post('/api/todo', { title:CryptoJS.AES.encrypt(title, "secret").toString(), userId: user?.id });
       fetchTodos();
     } catch (error) {
       console.error('Error creating todo:', error);
