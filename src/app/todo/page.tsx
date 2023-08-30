@@ -152,7 +152,7 @@ export default function TodoPage() {
 
                     className={`text-${todo.completed ? 'green' : 'red'}-500`}
                   >
-                    {todo.completed ? 'Completed' : 'Not Completed'}
+                    {todo.completed ? 'Done' : 'Pending'}
                   </button>
                 </td>
                 <td className="px-4 py-2 border">
