@@ -138,7 +138,14 @@ export default function TodoPage() {
     {paginatedTodos.map(todo => (
       <tr key={todo._id} className="border-t">
         <td className="px-4 py-2 whitespace-nowrap border">{todo.title}</td>
-        <td className="px-4 py-2 border">{todo.completed ? 'true' : 'false'}</td>
+        <td className="px-4 py-2 border">
+      <button
+        // onClick={() => handleToggleCompleted(todo._id, !todo.completed)}
+        className={`text-${todo.completed ? 'green' : 'red'}-500`}
+      >
+        {todo.completed ? 'Completed' : 'Not Completed'}
+      </button>
+    </td>
         <td className="px-4 py-2 border">
           <div className="flex space-x-2">
             <button
