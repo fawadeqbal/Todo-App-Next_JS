@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import Todo from '@/models/todoModel';
 import { toast } from 'react-toastify'
 import AES from 'crypto-js/aes';
+import Loading from './loading';
 
 
 const ITEMS_PER_PAGE = 5;
@@ -95,7 +96,7 @@ export default function TodoPage() {
   if (!user.isSignedIn) {
 
     router.push('/signin')
-    return <><h1>Null</h1></>;
+    return <><Loading/></>;
 
   }
 
