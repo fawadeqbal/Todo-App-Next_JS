@@ -30,7 +30,18 @@ export default function TodoPage() {
   const clerk = useClerk()
 
   const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+
   
+  if (!user.isSignedIn) {
+
+    router.push('/signin')
+    return <><Loading/></>;
+
+  }
 
   const openModalEdit = (todo: Todo) => {
     setIsModalEditOpen(true);
@@ -49,10 +60,6 @@ export default function TodoPage() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
-  useEffect(() => {
-    fetchTodos();
-  }, []);
 
   const fetchTodos = async () => {
     try {
@@ -93,13 +100,7 @@ export default function TodoPage() {
       setCurrentPage(prevPage => prevPage + 1);
     }
   };
-  if (!user.isSignedIn) {
-
-    router.push('/signin')
-    return <><Loading/></>;
-
-  }
-
+ 
 
   return (
     <div className="p-8">
