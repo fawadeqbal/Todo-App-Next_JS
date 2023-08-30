@@ -20,10 +20,10 @@ export default function RootLayout({
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
       <html lang="en">
         <body >
-          <main>
-            <Navbar />
+          <header>
+          <Navbar />
+          </header>
             {children}
-          </main>
         </body>
       </html>
     </ClerkProvider>
