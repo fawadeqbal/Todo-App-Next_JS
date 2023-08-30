@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Todo } from '../todo/page';
 import { useClerk } from '@clerk/nextjs';
+import { AES } from 'crypto-js';
 
 interface Props {
   closeModal: () => void;
@@ -21,15 +22,16 @@ const CreateTodoModal: React.FC<Props> = ({ closeModal, setTodos, fetchTodos }) 
     event.preventDefault();
 
     // Validate fields before submitting
-    if (!title) {
-      return;
-    }
-
+  
     setIsLoading(true); // Start loading state
 
     try {
-      await axios.post('/api/todo', { title, userId: user?.id });
-      fetchTodos();
+     // Encrypt the title using a secret key
+     const secretKey = process.env.SECRET_KEY as string;
+     const encryptedTitle = AES.encrypt(title, secretKey).toString();
+
+     await axios.post('/api/todo', { title: encryptedTitle, userId: user?.id });
+     fetchTodos();
     } catch (error) {
       console.error('Error creating todo:', error);
     }

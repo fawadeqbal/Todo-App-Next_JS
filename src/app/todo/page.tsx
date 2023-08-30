@@ -7,6 +7,7 @@ import { useAuth, useClerk } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import Todo from '@/models/todoModel';
 import { toast } from 'react-toastify'
+import AES from 'crypto-js/aes';
 
 
 const ITEMS_PER_PAGE = 5;
@@ -94,7 +95,7 @@ export default function TodoPage() {
   if (!user.isSignedIn) {
 
     router.push('/signin')
-    return null;
+    return <><h1>Null</h1></>;
 
   }
 
